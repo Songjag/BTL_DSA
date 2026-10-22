@@ -149,37 +149,37 @@ public:
 
     T& at(int i) {
         if (i < 0 || i >= n)
-            throw std::out_of_range("WeitaVector::at: index out of range");
+            throw std::out_of_range("WeitaVector::at: chi so qua tai");
         return a[i];
     }
 
     const T& at(int i) const {
         if (i < 0 || i >= n)
-            throw std::out_of_range("WeitaVector::at: index out of range");
+            throw std::out_of_range("WeitaVector::at: chi so qua tai");
         return a[i];
     }
 
     T& front() {
         if (empty())
-            throw std::out_of_range("WeitaVector::front: vector is empty");
+            throw std::out_of_range("WeitaVector::front: vector rong");
         return a[0];
     }
 
     const T& front() const {
         if (empty())
-            throw std::out_of_range("WeitaVector::front: vector is empty");
+            throw std::out_of_range("WeitaVector::front: vector rong");
         return a[0];
     }
 
     T& back() {
         if (empty())
-            throw std::out_of_range("WeitaVector::back: vector is empty");
+            throw std::out_of_range("WeitaVector::back: vector rong");
         return a[n - 1];
     }
 
     const T& back() const {
         if (empty())
-            throw std::out_of_range("WeitaVector::back: vector is empty");
+            throw std::out_of_range("WeitaVector::back: vector rong");
         return a[n - 1];
     }
 
