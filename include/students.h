@@ -1,14 +1,19 @@
-#include <bits/stdc++.h>
+#ifndef STUDENT_H
+#define STUDENT_h
+#include <string>
 using namespace std;
+class Student{
+    public:
+        int id;
+        string name;
+        string gender;
+        int age;
 
-int main() {
+        double math,physics,chemistry;
+        double gpa;
+        string academic_rank;
 
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-
-
-
-    
-    return 0;
-}
+        void display();
+        void calcGPA();
+};
+#endif

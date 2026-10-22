@@ -1,14 +1,22 @@
-#include <bits/stdc++.h>
+#include "students.h"
+#include <iostream>
 using namespace std;
-
-int main() {
-
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-
-
-
-    
-    return 0;
+void Student::calcGPA(){
+    gpa=(math+physics+chemistry)/3;
+    if (gpa>=8){
+        academic_rank="Gioi";
+    }
+    else if(gpa>=6.5){
+        academic_rank="Kha";
+    }
+    else if(gpa>=5){
+        academic_rank="Trung binh";
+    }
+    else{
+        academic_rank+"Yeu";
+    }
+}
+void Student::display(){
+    cout<<"Sinh vien:"<<id<<"-"<<name;
+    cout<<"Diem :"<<"Toan:"<<math<<"-"<<"Vat ly:"<<physics<<"-"<<"Hoa hoc:"<<chemistry<<endl;
 }
