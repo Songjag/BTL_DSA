@@ -7,6 +7,7 @@ class StudentManager{
     private:
         WeitaVector<Student> student;
         int NextID=1;
+        int findIndexByID(int id) ;
     public:
         void addStudent();
         void removeStudent(int id);
