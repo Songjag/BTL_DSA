@@ -1,0 +1,20 @@
+1
+Nguyen Duc Nguyen
+Nam
+19 10 9 9.9
+2
+Tran Minh Anh
+Nu
+20 8.5 9 8
+3
+Le Hoang Nam
+Nam
+21 7 7.5 8
+4
+Pham Thu Ha
+Nu
+19 9 8.5 9.5
+5
+Vo Quang Huy
+Nam
+22 6 6.5 7

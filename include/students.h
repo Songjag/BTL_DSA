@@ -1,19 +1,19 @@
 #ifndef STUDENT_H
-#define STUDENT_h
+#define STUDENT_H
 #include <string>
 using namespace std;
-class Student{
-    public:
-        int id;
-        string name;
-        string gender;
-        int age;
+class Student {
+public:
+    int id;
+    string name;
+    string gender;
+    int age;
 
-        double math,physics,chemistry;
-        double gpa;
-        string academic_rank;
+    double math, physics, chemistry;
+    double gpa;
+    string academic_rank;
 
-        void display();
-        void calcGPA();
+    void display();
+    void calcGPA();
 };
 #endif

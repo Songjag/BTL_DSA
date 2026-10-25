@@ -9,9 +9,11 @@
                 "-g",
                 "-I",
                 "${workspaceFolder}/include",
-                "${file}",
+                "${workspaceFolder}/main.cpp",
+                "${workspaceFolder}/src/students.cpp",
+                "${workspaceFolder}/src/students_manager.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${workspaceFolder}/main"
             ],
             "options": {
                 "cwd": "${fileDirname}"
@@ -31,7 +33,7 @@
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "g++ -std=c++17 -Wall -Wextra -I \"${workspaceFolder}/include\" \"${workspaceFolder}/main.cpp\" -o \"${workspaceFolder}/main\" && \"${workspaceFolder}/main\""
+                "g++ -std=c++17 -Wall -Wextra -I \"${workspaceFolder}/include\" \"${workspaceFolder}/main.cpp\" \"${workspaceFolder}/src/students.cpp\" \"${workspaceFolder}/src/students_manager.cpp\" -o \"${workspaceFolder}/main\" && \"${workspaceFolder}/main\""
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

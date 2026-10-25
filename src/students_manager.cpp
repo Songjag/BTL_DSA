@@ -1,101 +1,125 @@
+#include "students_manager.h"
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
-#include <include/students_manager.h>
-#include <bits/stdc++.h>
+#include <limits>
 using namespace std;
 
-int StudentManager::findIndexByID(int id){
-    for (int i=0;i<student.size();i++){
-        if (student[i].id==id){
+int StudentManager::findIndexByID(int id) {
+    for (int i = 0; i < students.size(); i++) {
+        if (students[i].id == id) {
             return i;
         }
     }
+    return -1;
 }
-void inputScore(double &score, string subject) {
-    do {
+bool inputScore(double &score, const string &subject) {
+    while (true) {
         cout << "Nhap diem " << subject << ": ";
-        cin >> score;
-    } while (score < 0 || score > 10);
-}
-void StudentManager::addStudent(){
-    Student sv;
-    sv.id=NextID;
-    cout<<"Nhap ten sinh vien:";getline(cin,sv.name);
-    cout<<"Nhap gioi tinh:";getline(cin,sv.gender);
-    do {
-        cout << "Nhap tuoi: ";cin >> sv.age;
-        if (sv.age < 10 || sv.age > 100) {
-            cout << "Tuoi khong le vui long nhap lai.\n";
+        if (cin >> score && isfinite(score) && score >= 0 && score <= 10) {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return true;
         }
-    } while (sv.age < 10 || sv.age > 100);
-    inputScore(sv.math,"Toan");
-    inputScore(sv.physics,"Vat ly");
-    inputScore(sv.chemistry,"Hoa");
-    sv.calcGPA();
-    student.push_back(sv);
-    NextID++;
-    cout<<"Them thanh cong sinh vien voi id:"<<sv.id<<endl;
-}
-void StudentManager::removeStudent(int id){
-    int idx=findIndexByID(id);
-    if (idx==-1){
-        cout<<"Khong tim thay sinh vien:\n";
+        if (cin.eof())
+            return false;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Diem phai nam trong khoang 0 den 10.\n";
     }
-    student.erase(idx);
-    cout<<"Xoa sinh vien thanh cong\n";
 }
-void StudentManager::updateStudent(int id){
-    int idx=findIndexByID(id);
-    Student sv=student[idx];
-    cin.ignore(numeric_limits<streamsize>::max(),'\n');
-    cout<<"Nhap thong tin sinh vien moi:";
-    cout<<"Nhap ten sinh vien:";getline(cin,sv.name);
-    cout<<"Nhap gioi tinh:";getline(cin,sv.gender);
-    do {
-        cout << "Nhap tuoi: ";cin >> sv.age;
-        if (sv.age < 10 || sv.age > 100) {
-            cout << "Tuoi khong le vui long nhap lai.\n";
+
+// Them va cap nhat dung chung cach nhap thong tin.
+bool inputStudent(Student &sv) {
+    cout << "Nhap ten sinh vien: ";
+    if (!getline(cin, sv.name))
+        return false;
+    cout << "Nhap gioi tinh: ";
+    if (!getline(cin, sv.gender))
+        return false;
+
+    while (true) {
+        cout << "Nhap tuoi: ";
+        if (cin >> sv.age && sv.age >= 10 && sv.age <= 100) {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            break;
         }
-    } while (sv.age < 10 || sv.age > 100);
-    inputScore(sv.math,"Toan");
-    inputScore(sv.physics,"Vat ly");
-    inputScore(sv.chemistry,"Hoa");
+        if (cin.eof())
+            return false;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Tuoi phai nam trong khoang 10 den 100.\n";
+    }
+
+    if (!inputScore(sv.math, "Toan") || !inputScore(sv.physics, "Vat ly") ||
+        !inputScore(sv.chemistry, "Hoa"))
+        return false;
     sv.calcGPA();
-    student[idx]=sv;
-    cout<<"Nhap thong tin sinh vien thanh cong"<<endl;
+    return true;
 }
-void StudentManager::displayAll(){
-    if (student.empty()) {
+
+void StudentManager::addStudent() {
+    Student sv;
+    if (!inputStudent(sv))
+        return;
+    sv.id = nextID;
+    students.push_back(sv);
+    nextID++;
+    cout << "Da them sinh vien co ID: " << sv.id << '\n';
+}
+void StudentManager::removeStudent(int id) {
+    int idx = findIndexByID(id);
+    if (idx == -1) {
+        cout << "Khong tim thay sinh vien:\n";
+        return;
+    }
+    students.erase(idx);
+    cout << "Xoa sinh vien thanh cong\n";
+}
+void StudentManager::updateStudent(int id) {
+    int idx = findIndexByID(id);
+    if (idx == -1) {
+        cout << "Khong tim thay sinh vien!\n";
+        return;
+    }
+    Student sv = students[idx];
+    cout << "Nhap thong tin sinh vien moi:\n";
+    if (!inputStudent(sv))
+        return;
+    students[idx] = sv;
+    cout << "Da cap nhat thong tin sinh vien.\n";
+}
+
+void StudentManager::displayAll() {
+    if (students.empty()) {
         cout << "\nDanh sach sinh vien dang rong.\n";
         return;
     }
 
-    const string separator =
-        "+----+------------------------------+------------+------+------+------+------+-------+--------------+\n";
+    const string separator = "+----+------------------------------+------------+------+------+-----"
+                             "-+------+-------+--------------+\n";
 
-    cout << "\nDANH SACH SINH VIEN (" << student.size() << " sinh vien)\n";
+    cout << "\nDANH SACH SINH VIEN (" << students.size() << " sinh vien)\n";
     cout << separator;
-    cout << "| ID | Ho va ten                    | Gioi tinh  | Tuoi | Toan | Ly   | Hoa  | GPA   | Xep loai     |\n";
+    cout << "| ID | Ho va ten                    | Gioi tinh  | Tuoi | Toan | Ly   | Hoa  | GPA   "
+            "| Xep loai     |\n";
     cout << separator;
 
     cout << fixed << setprecision(2);
-    for (int i = 0; i < student.size(); ++i) {
-        const Student &sv = student[i];
-        cout << "| " << setw(2) << right << sv.id
-             << " | " << setw(28) << left << sv.name
-             << " | " << setw(10) << left << sv.gender
-             << " | " << setw(4) << right << sv.age
-             << " | " << setw(4) << sv.math
-             << " | " << setw(4) << sv.physics
-             << " | " << setw(4) << sv.chemistry
-             << " | " << setw(5) << sv.gpa
-             << " | " << setw(12) << left << sv.academic_rank
-             << " |\n";
+    for (int i = 0; i < students.size(); ++i) {
+        const Student &sv = students[i];
+        cout << "| " << setw(2) << right << sv.id << " | " << setw(28) << left << sv.name << " | "
+             << setw(10) << left << sv.gender << " | " << setw(4) << right << sv.age << " | "
+             << setw(4) << sv.math << " | " << setw(4) << sv.physics << " | " << setw(4)
+             << sv.chemistry << " | " << setw(5) << sv.gpa << " | " << setw(12) << left
+             << sv.academic_rank << " |\n";
     }
     cout << separator;
     cout.unsetf(ios::floatfield);
     cout << setprecision(6);
 }
-void StudentManager::saveFile(){
+void StudentManager::saveFile() {
     ofstream file("data/students.txt");
 
     if (!file) {
@@ -103,16 +127,13 @@ void StudentManager::saveFile(){
         return;
     }
 
-    for (int i = 0; i < student.size(); i++) {
-        const Student& sv = student[i];
+    for (int i = 0; i < students.size(); i++) {
+        const Student &sv = students[i];
 
         file << sv.id << '\n';
         file << sv.name << '\n';
         file << sv.gender << '\n';
-        file << sv.age << " "
-             << sv.math << " "
-             << sv.physics << " "
-             << sv.chemistry << '\n';
+        file << sv.age << " " << sv.math << " " << sv.physics << " " << sv.chemistry << '\n';
     }
 
     if (!file) {
@@ -126,7 +147,8 @@ void StudentManager::saveFile(){
 void StudentManager::readFile() {
     ifstream file("data/students.txt");
 
-    if (!file) return;
+    if (!file)
+        return;
 
     WeitaVector<Student> loaded;
     Student sv;
@@ -135,18 +157,16 @@ void StudentManager::readFile() {
     while (file >> sv.id) {
         file.ignore(numeric_limits<streamsize>::max(), '\n');
 
-        if (!getline(file, sv.name)) break;
-        if (!getline(file, sv.gender)) break;
+        if (!getline(file, sv.name))
+            break;
+        if (!getline(file, sv.gender))
+            break;
 
-        if (!(file >> sv.age
-                   >> sv.math
-                   >> sv.physics
-                   >> sv.chemistry)) break;
+        if (!(file >> sv.age >> sv.math >> sv.physics >> sv.chemistry))
+            break;
 
-        if (sv.id <= 0 || sv.age <= 0 ||
-            sv.math < 0 || sv.math > 10 ||
-            sv.physics < 0 || sv.physics > 10 ||
-            sv.chemistry < 0 || sv.chemistry > 10) {
+        if (sv.id <= 0 || sv.age <= 0 || sv.math < 0 || sv.math > 10 || sv.physics < 0 ||
+            sv.physics > 10 || sv.chemistry < 0 || sv.chemistry > 10) {
             cout << "File chua du lieu khong hop le!\n";
             return;
         }
@@ -162,15 +182,15 @@ void StudentManager::readFile() {
         return;
     }
 
-    student = loaded;
-    NextID = maxID + 1;
+    students = loaded;
+    nextID = maxID + 1;
 }
-void StudentManager::findStudent(string name){
+void StudentManager::findStudent(string name) {
     bool found = false;
 
-    for (int i = 0; i < student.size(); i++) {
-        if (student[i].name.find(name) != string::npos) {
-            student[i].display();
+    for (int i = 0; i < students.size(); i++) {
+        if (students[i].name.find(name) != string::npos) {
+            students[i].display();
             found = true;
         }
     }
@@ -180,10 +200,10 @@ void StudentManager::findStudent(string name){
 }
 
 void StudentManager::sortByGPA() {
-    for (int i = 0; i < student.size(); i++) {
-        for (int j = i + 1; j < student.size(); j++) {
-            if (student[i].gpa < student[j].gpa) {
-                swap(student[i], student[j]);
+    for (int i = 0; i < students.size(); i++) {
+        for (int j = i + 1; j < students.size(); j++) {
+            if (students[i].gpa < students[j].gpa) {
+                swap(students[i], students[j]);
             }
         }
     }
@@ -192,10 +212,10 @@ void StudentManager::sortByGPA() {
 }
 
 void StudentManager::sortByName() {
-    for (int i = 0; i < student.size(); i++) {
-        for (int j = i + 1; j < student.size(); j++) {
-            if (student[i].name > student[j].name) {
-                swap(student[i], student[j]);
+    for (int i = 0; i < students.size(); i++) {
+        for (int j = i + 1; j < students.size(); j++) {
+            if (students[i].name > students[j].name) {
+                swap(students[i], students[j]);
             }
         }
     }
