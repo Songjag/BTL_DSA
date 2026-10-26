@@ -3,9 +3,7 @@
 #include <iostream>
 #include <limits>
 using namespace std;
-
 void clearScreen() { cout << "\033[2J\033[H" << flush; }
-// Moi lan nhap so deu bo phan con lai cua dong.
 bool readNumber(const string &prompt, int &number) {
     while (true) {
         cout << prompt;
@@ -20,13 +18,11 @@ bool readNumber(const string &prompt, int &number) {
         cout << "Lua chon khong hop le. Vui long nhap so nguyen.\n";
     }
 }
-
 void pauseScreen() {
     cout << "\nNhan Enter de tiep tuc...";
     string line;
     getline(cin, line);
 }
-
 void displayVector(const WeitaVector<int> &values) {
     if (values.empty()) {
         cout << "[ ]\n";

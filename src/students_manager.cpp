@@ -1,12 +1,6 @@
 #include "students_manager.h"
-#include <algorithm>
-#include <cmath>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <limits>
+#include<bits/stdc++.h>
 using namespace std;
-
 int StudentManager::findIndexByID(int id) {
     for (int i = 0; i < students.size(); i++) {
         if (students[i].id == id) {
@@ -29,8 +23,6 @@ bool inputScore(double &score, const string &subject) {
         cout << "Diem phai nam trong khoang 0 den 10.\n";
     }
 }
-
-// Them va cap nhat dung chung cach nhap thong tin.
 bool inputStudent(Student &sv) {
     cout << "Nhap ten sinh vien: ";
     if (!getline(cin, sv.name))
@@ -58,7 +50,6 @@ bool inputStudent(Student &sv) {
     sv.calcGPA();
     return true;
 }
-
 void StudentManager::addStudent() {
     Student sv;
     if (!inputStudent(sv))
@@ -90,7 +81,6 @@ void StudentManager::updateStudent(int id) {
     students[idx] = sv;
     cout << "Da cap nhat thong tin sinh vien.\n";
 }
-
 void StudentManager::displayAll() {
     if (students.empty()) {
         cout << "\nDanh sach sinh vien dang rong.\n";
@@ -140,10 +130,8 @@ void StudentManager::saveFile() {
         cout << "Ghi file that bai!\n";
         return;
     }
-
     cout << "Luu danh sach thanh cong!\n";
 }
-
 void StudentManager::readFile() {
     ifstream file("data/students.txt");
 
@@ -219,6 +207,5 @@ void StudentManager::sortByName() {
             }
         }
     }
-
     cout << "Da sap xep theo ten!\n";
 }
